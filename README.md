@@ -48,15 +48,13 @@ Project_EMS/
 
 ⚙️ Installation & Setup
 1️⃣ Clone the repository
-git clone https://github.com/your-username/Project_EMS.git
+git clone https://github.com/Jasbir001/event-management-system.git
 cd Project_EMS
 2️⃣ Install dependencies
 npm install
 3️⃣ Setup Database
-
 Make sure MongoDB is running locally
 Update your MongoDB connection in: 
-
 4️⃣ Run the project
 npm start
 
