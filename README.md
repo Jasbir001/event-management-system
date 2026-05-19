@@ -1,4 +1,4 @@
-📌 Event Management System (EMS)
+📌 Event Management System (EMS)   
 
 A full-stack Event Management System built using Node.js, Express.js, MongoDB, and EJS. This project allows users to manage appointments, bookings, and contact requests efficiently.
 
