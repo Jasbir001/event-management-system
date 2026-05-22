@@ -1,23 +1,14 @@
-const express= require('express');
-const app = express();
-const routing= require('./routes.js')
+const express = require('express');
 const bodyParser = require('body-parser');
-const path = require('path');
-const urlsp=bodyParser.urlencoded({extended:false});
-const port=4001;
+const app = express();
+const urlsp = bodyParser.urlencoded({ extended: false });
 
+const port = 4002;
 
+app.use(urlsp);
+app.use(express.json()); // for JSON APIs
+app.use('/api', require('./backend/routes/api'));
 
-
-app.set('view engine','ejs')
-app.use(urlsp)
-
-app.use('/',routing)
-app.use("/public",express.static(__dirname+'/public'));
-
-
-app.listen(port,()=>{
-    console.log(`server is Starting http://localhost:${port}`)
-})
-
-
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});

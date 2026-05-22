@@ -1,30 +1,22 @@
-const contactModel = require('../Modal/Contact')
+const contactModel = require('../Models/Contact');
 
-class contact{
-    Enquire_Contact(req,res)
-    {
-        if(req.method=='GET')
-        {
-            res.render('contact')
-        }
-        else{
-            const data = 
-            {
-                Name: req.body.name,
-                Email: req.body.email,
-                Subject: req.body.subject,
-                Message: req.body.message
+class ContactController {
+    Enquire_Contact(req, res) {
+        const data = {
+            Name: req.body.name,
+            Email: req.body.email,
+            Subject: req.body.subject,
+            Message: req.body.message
+        };
+
+        contactModel.create(data, (err) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ success: false, msg: 'Something went wrong try again', error: err.message });
             }
-            contactModel.create(data,(err)=>{
-                if(err){
-                    res.render('contact',{msg:'Somthing went Wrong try again'})
-                }
-                else{
-                    res.render('contact',{msg:"Your Enguiry has been Submitted Successfully"})
-                }
-            })
-        }
+            res.status(200).json({ success: true, msg: "Your Enquiry has been Submitted Successfully" });
+        });
     }
 }
 
-module.exports = new contact()
+module.exports = new ContactController();

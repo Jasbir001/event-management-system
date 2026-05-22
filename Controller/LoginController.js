@@ -1,23 +1,13 @@
-
-
-class Login 
-{
-    Login_user(req,res)
-    {
-        if(req.method=='GET')
-        {
-            res.render('login')
-        }
-        else{
-
-        }
+class LoginController {
+    Login_user(req, res) {
+        // Placeholder for actual login logic
+        res.status(200).json({ success: true, msg: "Logged in successfully" });
     }
-    createuser(req,res)
-    {
-        if(req.method=="GET")
-            res.render('createuser')
+
+    createuser(req, res) {
+        // Placeholder for user creation logic
+        res.status(200).json({ success: true, msg: "User created successfully" });
     }
 }
 
-
-module.exports = new Login()
+module.exports = new LoginController();
