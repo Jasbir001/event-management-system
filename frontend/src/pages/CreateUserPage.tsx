@@ -27,7 +27,8 @@ const CreateUserPage: React.FC = () => {
       return;
     }
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/useraccount`, {
+      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/useraccount` : '/api/useraccount';
+      const res = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

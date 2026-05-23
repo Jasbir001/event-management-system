@@ -44,7 +44,11 @@ const MyBookingPage: React.FC = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/mybooking` : '/api/mybooking';
+        const role = localStorage.getItem("userRole") || "user";
+        const email = localStorage.getItem("userEmail") || "";
+        const apiUrl = import.meta.env.VITE_API_URL 
+          ? `${import.meta.env.VITE_API_URL}/mybooking?role=${role}&email=${encodeURIComponent(email)}` 
+          : `/api/mybooking?role=${role}&email=${encodeURIComponent(email)}`;
         const res = await fetch(apiUrl);
         if (res.ok) {
           const data = await res.json();

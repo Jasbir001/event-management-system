@@ -21,6 +21,27 @@ class AppointmentController {
         });
     }
 
+    Get_Appointments(req, res) {
+        appointmentModel.list_appointment((err, results) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ success: false, msg: "Error fetching appointments", error: err.message });
+            }
+            res.status(200).json(results);
+        });
+    }
+
+    Delete_Appointment(req, res) {
+        const id = req.params.id;
+        appointmentModel.delete({ id }, (err) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ success: false, msg: "Error deleting appointment", error: err.message });
+            }
+            res.status(200).json({ success: true, msg: "Appointment resolved and deleted" });
+        });
+    }
+
     Add_booking(req, res) {
         const data = {
             Name: req.body.naam || req.body.name,
@@ -62,18 +83,34 @@ class AppointmentController {
     }
 
     Get_bookings(req, res) {
-        bookingModel.list_booking((err, results) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).json({ success: false, msg: "Error fetching bookings", error: err.message });
+        const role = req.query.role;
+        const email = req.query.email;
+
+        if (role === 'admin') {
+            bookingModel.list_booking((err, results) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).json({ success: false, msg: "Error fetching bookings", error: err.message });
+                }
+                res.status(200).json(results);
+            });
+        } else {
+            if (!email) {
+                return res.status(400).json({ success: false, msg: "Email is required to fetch user bookings" });
             }
-            res.status(200).json(results);
-        });
+            bookingModel.list_user_booking(email, (err, results) => {
+                if (err) {
+                    console.error(err);
+                    return res.status(500).json({ success: false, msg: "Error fetching bookings", error: err.message });
+                }
+                res.status(200).json(results);
+            });
+        }
     }
 
     Update_booking_status(req, res) {
         const id = req.params.id;
-        const status = req.body.status; // 'approved' or 'rejected'
+        const status = req.body.status;
         
         if (!['approved', 'rejected', 'pending'].includes(status)) {
             return res.status(400).json({ success: false, msg: "Invalid status value." });
@@ -85,6 +122,23 @@ class AppointmentController {
                 return res.status(500).json({ success: false, msg: "Error updating status", error: err.message });
             }
             res.status(200).json({ success: true, msg: "Booking status updated to " + status });
+        });
+    }
+
+    Update_payment_status(req, res) {
+        const id = req.params.id;
+        const payment_status = req.body.payment_status;
+
+        if (!['received', 'pending'].includes(payment_status)) {
+            return res.status(400).json({ success: false, msg: "Invalid payment status value." });
+        }
+
+        bookingModel.update_payment_status(id, payment_status, (err) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ success: false, msg: "Error updating payment status", error: err.message });
+            }
+            res.status(200).json({ success: true, msg: "Payment status updated to " + payment_status });
         });
     }
 }

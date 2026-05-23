@@ -16,20 +16,46 @@ const Header: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState("user");
+
   useEffect(() => {
-    setIsMenuOpen(false);
+    setIsLoggedIn(localStorage.getItem("userLoggedIn") === "true");
+    setUserRole(localStorage.getItem("userRole") || "user");
   }, [location.pathname]);
 
-  const navLinks = [
+  const handleLogout = async () => {
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/logout` : '/api/logout';
+      await fetch(apiUrl, { method: "POST" });
+    } catch (e) {
+      console.error(e);
+    }
+    localStorage.removeItem("userLoggedIn");
+    localStorage.removeItem("userRole");
+    setIsLoggedIn(false);
+    window.location.href = "/login";
+  };
+
+  let navLinks = [
     { name: 'Home', path: '/' },
     { name: 'About Us', path: '/about' },
     { name: 'My Bookings', path: '/mybooking' },
     { name: 'Contact', path: '/contact' },
   ];
 
+  if (userRole === "admin") {
+    navLinks = [
+      { name: 'Home', path: '/' },
+      { name: 'About Us', path: '/about' },
+      { name: 'My Bookings', path: '/mybooking' },
+      { name: 'Admin Dashboard', path: '/admin' }
+    ];
+  }
+
   return (
     <header className="w-full flex flex-col relative z-50">
-      {/* Sticky Premium Navbar */}
+      {/* ... previous code unchanged ... */}
       <div className={`sticky top-0 z-50 transition-all duration-300 w-full ${
         isScrolled 
           ? 'bg-white/95 backdrop-blur-xl shadow-lg shadow-gray-200/50 border-b border-gray-100 py-3' 
@@ -74,19 +100,30 @@ const Header: React.FC = () => {
 
             {/* Right Section: Actions */}
             <div className="hidden lg:flex items-center gap-6">
-              <Link 
-                to="/login" 
-                className="text-[15px] font-bold text-gray-700 hover:text-blue-600 transition-colors"
-              >
-                Log in
-              </Link>
-              <Link 
-                to="/mybooking" 
-                className="group flex items-center gap-2 px-6 py-2.5 text-[15px] font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300"
-              >
-                Book Now
-                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </Link>
+              {isLoggedIn ? (
+                <button 
+                  onClick={handleLogout}
+                  className="text-[15px] font-bold text-red-600 hover:text-red-700 transition-colors"
+                >
+                  Log out
+                </button>
+              ) : (
+                <Link 
+                  to="/login" 
+                  className="text-[15px] font-bold text-gray-700 hover:text-blue-600 transition-colors"
+                >
+                  Log in
+                </Link>
+              )}
+              {userRole !== "admin" && (
+                <Link 
+                  to="/mybooking" 
+                  className="group flex items-center gap-2 px-6 py-2.5 text-[15px] font-bold text-white bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-300"
+                >
+                  Book Now
+                  <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                </Link>
+              )}
             </div>
 
             {/* Mobile Menu Button */}

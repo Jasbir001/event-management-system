@@ -12,7 +12,8 @@ const LoginPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/login`, {
+      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/login` : '/api/login';
+      const res = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -20,9 +21,16 @@ const LoginPage: React.FC = () => {
       const data = await res.json();
       if (data.success) {
         localStorage.setItem("userLoggedIn", "true");
-        navigate("/");
+        localStorage.setItem("userRole", data.role || "user");
+        localStorage.setItem("userEmail", email);
+        
+        if (data.role === "admin") {
+          navigate("/admin");
+        } else {
+          navigate("/");
+        }
       } else {
-        alert(data.message || "Login failed");
+        alert(data.msg || "Login failed");
       }
     } catch (err) {
       console.error(err);

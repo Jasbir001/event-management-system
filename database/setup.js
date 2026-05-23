@@ -2,7 +2,7 @@ const pool = require('./mydb');
 
 const createReviewsTable = `
 CREATE TABLE IF NOT EXISTS reviews (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     role VARCHAR(255) DEFAULT 'Client',
     review TEXT NOT NULL,

@@ -7,15 +7,18 @@ const ContactController = require('../../../Controller/ContactController');
 const ReviewController = require('../../../Controller/ReviewController');
 
 router.post('/submit_from', AppointmentController.Add_appointment.bind(AppointmentController));
+router.get('/appointment', AppointmentController.Get_Appointments.bind(AppointmentController));
+router.delete('/appointment/:id', AppointmentController.Delete_Appointment.bind(AppointmentController));
 
 router.post('/login', LoginController.Login_user.bind(LoginController));
-
+router.post('/logout', LoginController.Logout_user.bind(LoginController));
 router.post('/useraccount', LoginController.createuser.bind(LoginController));
 
 router.post('/eventbooked', AppointmentController.Add_booking.bind(AppointmentController));
 
-// Wait, the frontend might be trying to post to /contact? There was no route for contact in original, but let's add one just in case
 router.post('/contact', ContactController.Enquire_Contact.bind(ContactController));
+router.get('/contact', ContactController.Get_Contacts.bind(ContactController));
+router.delete('/contact/:id', ContactController.Delete_Contact.bind(ContactController));
 
 router.get('/eventbooks', (req, res) => {
   const events = [
@@ -61,6 +64,7 @@ router.get('/eventbooks', (req, res) => {
 
 router.get('/mybooking', AppointmentController.Get_bookings.bind(AppointmentController));
 router.put('/booking/:id/status', AppointmentController.Update_booking_status.bind(AppointmentController));
+router.put('/booking/:id/payment', AppointmentController.Update_payment_status.bind(AppointmentController));
 
 router.post('/reviews', ReviewController.Add_review.bind(ReviewController));
 router.get('/reviews', ReviewController.Get_reviews.bind(ReviewController));

@@ -59,6 +59,7 @@ const HomePage: React.FC = () => {
 
   const [reviewsData, setReviewsData] = useState<any[]>([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState("user");
   const [reviewForm, setReviewForm] = useState({ name: "", role: "", review: "", rating: 5 });
   
   // Promotional Popup State
@@ -67,6 +68,7 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     setIsLoggedIn(localStorage.getItem("userLoggedIn") === "true");
+    setUserRole(localStorage.getItem("userRole") || "user");
     fetchReviews();
     fetchPromotion();
   }, []);
@@ -89,7 +91,8 @@ const HomePage: React.FC = () => {
 
   const fetchReviews = async () => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/reviews`);
+      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/reviews` : '/api/reviews';
+      const res = await fetch(apiUrl);
       const data = await res.json();
       if (Array.isArray(data) && data.length > 0) {
         setReviewsData(data);
@@ -102,7 +105,8 @@ const HomePage: React.FC = () => {
   const handleReviewSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/reviews`, {
+      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/reviews` : '/api/reviews';
+      const res = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(reviewForm),
@@ -128,7 +132,8 @@ const HomePage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/submit_from`, {
+      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/submit_from` : '/api/submit_from';
+      const res = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -290,6 +295,7 @@ const HomePage: React.FC = () => {
       </section>
 
       {/* Appointment */}
+      {userRole !== "admin" && (
       <section className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-xl shadow-gray-200/50">
         <div className="grid items-stretch lg:grid-cols-2">
           <div className="relative hidden min-h-[320px] lg:block">
@@ -373,6 +379,7 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       </section>
+      )}
 
       {/* Promotional Popup Modal */}
       {showPromoPopup && activePromotion && (
@@ -394,9 +401,11 @@ const HomePage: React.FC = () => {
                    <Calendar className="h-5 w-5" />
                    <span>{new Date(activePromotion.event_date).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}</span>
                  </div>
-                 <div className="text-sm font-bold text-gray-800 mt-1">
-                   Price: <span className="text-blue-600 bg-blue-100 px-2 py-0.5 rounded ml-1">{activePromotion.price_info}</span>
-                 </div>
+                 {activePromotion.price_info && (
+                   <div className="text-sm font-bold text-gray-800 mt-2">
+                     Entry Ticket: <span className="text-blue-600 bg-blue-100 px-2 py-0.5 rounded ml-1">{activePromotion.price_info}</span>
+                   </div>
+                 )}
                </div>
                <div className="flex gap-3">
                  <button 

@@ -10,7 +10,7 @@ import AboutPage from "./pages/AboutPage";
 import EventBookedPage from "./pages/EventBookedPage";
 import MyBookingPage from "./pages/MyBookingPage";
 import ContactPage from "./pages/ContactPage";
-import AdminDashboard from "./pages/AdminDashboard";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 
 const AppRoutes: React.FC = () => (
   <BrowserRouter>

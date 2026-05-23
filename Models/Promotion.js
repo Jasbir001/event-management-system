@@ -11,13 +11,13 @@ class Promotion {
         return;
       }
       
-      const insertQuery = "INSERT INTO promotions (title, description, price_info, event_date, is_active) VALUES (?, ?, ?, ?, TRUE)";
-      pool.query(insertQuery, [title, description, price_info, event_date], (err, res) => {
+      const insertQuery = "INSERT INTO promotions (title, description, price_info, event_date, is_active) VALUES ($1, $2, $3, $4, TRUE) RETURNING id";
+      pool.query(insertQuery, [title, description, price_info, event_date], (err, res2) => {
         if (err) {
           result(err, null);
           return;
         }
-        result(null, { id: res.insertId, title, description, price_info, event_date });
+        result(null, { id: res2.rows[0].id, title, description, price_info, event_date });
       });
     });
   }
@@ -31,8 +31,8 @@ class Promotion {
         result(err, null);
         return;
       }
-      if (res.length) {
-        result(null, res[0]);
+      if (res.rows.length) {
+        result(null, res.rows[0]);
       } else {
         result(null, null); // No active/future promotions
       }

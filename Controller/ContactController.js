@@ -17,6 +17,27 @@ class ContactController {
             res.status(200).json({ success: true, msg: "Your Enquiry has been Submitted Successfully" });
         });
     }
+
+    Get_Contacts(req, res) {
+        contactModel.list_contact((err, results) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ success: false, msg: "Error fetching contacts", error: err.message });
+            }
+            res.status(200).json(results);
+        });
+    }
+
+    Delete_Contact(req, res) {
+        const id = req.params.id;
+        contactModel.delete({ id }, (err) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ success: false, msg: "Error deleting contact", error: err.message });
+            }
+            res.status(200).json({ success: true, msg: "Contact inquiry resolved and deleted" });
+        });
+    }
 }
 
 module.exports = new ContactController();
