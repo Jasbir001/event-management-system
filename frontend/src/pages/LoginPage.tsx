@@ -19,6 +19,7 @@ const LoginPage: React.FC = () => {
       });
       const data = await res.json();
       if (data.success) {
+        localStorage.setItem("userLoggedIn", "true");
         navigate("/");
       } else {
         alert(data.message || "Login failed");

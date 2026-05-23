@@ -4,6 +4,7 @@ const router = express.Router();
 const AppointmentController = require('../../../Controller/AppointmentController');
 const LoginController = require('../../../Controller/LoginController');
 const ContactController = require('../../../Controller/ContactController');
+const ReviewController = require('../../../Controller/ReviewController');
 
 router.post('/submit_from', AppointmentController.Add_appointment.bind(AppointmentController));
 
@@ -60,5 +61,12 @@ router.get('/eventbooks', (req, res) => {
 
 router.get('/mybooking', AppointmentController.Get_bookings.bind(AppointmentController));
 router.put('/booking/:id/status', AppointmentController.Update_booking_status.bind(AppointmentController));
+
+router.post('/reviews', ReviewController.Add_review.bind(ReviewController));
+router.get('/reviews', ReviewController.Get_reviews.bind(ReviewController));
+
+const PromotionController = require('../../../Controller/PromotionController');
+router.post('/promotions', PromotionController.Add_promotion);
+router.get('/promotions/active', PromotionController.Get_active_promotion);
 
 module.exports = router;

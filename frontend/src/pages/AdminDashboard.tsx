@@ -23,6 +23,9 @@ const AdminDashboard: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<number | null>(null);
+  
+  const [promoForm, setPromoForm] = useState({ title: '', description: '', price_info: 'Free', event_date: '' });
+  const [promoLoading, setPromoLoading] = useState(false);
 
   const fetchBookings = async () => {
     setLoading(true);
@@ -68,6 +71,30 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
+  const handlePromoSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPromoLoading(true);
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/promotions` : '/api/promotions';
+      const res = await fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(promoForm)
+      });
+      if (res.ok) {
+        alert("Promotion Created Successfully! It is now live for users.");
+        setPromoForm({ title: '', description: '', price_info: 'Free', event_date: '' });
+      } else {
+        alert("Failed to create promotion");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error connecting to server");
+    } finally {
+      setPromoLoading(false);
+    }
+  };
+
   return (
     <div className="page-shell pb-20">
       <header className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
@@ -85,6 +112,58 @@ const AdminDashboard: React.FC = () => {
           Refresh
         </button>
       </header>
+
+      {/* Add Promotion Form */}
+      <div className="mb-12 rounded-2xl border border-blue-100 bg-blue-50/30 p-6 shadow-sm">
+        <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+          ✨ Create Special Event Popup
+        </h2>
+        <form onSubmit={handlePromoSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Event Title</label>
+            <input 
+              required type="text" 
+              value={promoForm.title} onChange={e => setPromoForm({...promoForm, title: e.target.value})}
+              className="w-full rounded-xl border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none" 
+              placeholder="e.g. Free Yoga Camp" 
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Event Date & Time (Expiry)</label>
+            <input 
+              required type="datetime-local" 
+              value={promoForm.event_date} onChange={e => setPromoForm({...promoForm, event_date: e.target.value})}
+              className="w-full rounded-xl border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none" 
+            />
+          </div>
+          <div className="md:col-span-2">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+            <textarea 
+              required rows={2}
+              value={promoForm.description} onChange={e => setPromoForm({...promoForm, description: e.target.value})}
+              className="w-full rounded-xl border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none" 
+              placeholder="Join us for an amazing evening..." 
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Price Info</label>
+            <input 
+              type="text" 
+              value={promoForm.price_info} onChange={e => setPromoForm({...promoForm, price_info: e.target.value})}
+              className="w-full rounded-xl border border-gray-300 px-4 py-2 focus:border-blue-500 focus:outline-none" 
+              placeholder="e.g. Free, Rs. 500 Basic Entry" 
+            />
+          </div>
+          <div className="flex items-end">
+            <button 
+              type="submit" disabled={promoLoading}
+              className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2.5 font-bold text-white shadow-md hover:shadow-lg disabled:opacity-50"
+            >
+              {promoLoading ? 'Publishing...' : 'Publish Popup to Users'}
+            </button>
+          </div>
+        </form>
+      </div>
 
       <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl shadow-gray-200/40">
         <div className="overflow-x-auto">
