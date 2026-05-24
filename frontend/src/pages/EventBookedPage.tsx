@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle2, ClipboardList, User, Mail, Phone, Calendar as CalendarIcon, Users, ArrowRight } from "lucide-react";
+import { ClipboardList, User, Mail, Phone, Calendar as CalendarIcon, Users, ArrowRight } from "lucide-react";
 
 const EventBookedPage: React.FC = () => {
   const [formData, setFormData] = useState({

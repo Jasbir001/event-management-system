@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CheckCircle, XCircle, Clock, Users, Calendar, Mail, Phone, RefreshCw, MessageSquare, Trash2, List } from "lucide-react";
+import { CheckCircle, XCircle, Calendar, RefreshCw, MessageSquare, Trash2, List } from "lucide-react";
 
 interface Booking {
   id: number;
@@ -46,7 +46,7 @@ const AdminDashboard: React.FC = () => {
   const [contacts, setContacts] = useState<Contact[]>([]);
   
   const [loading, setLoading] = useState(true);
-  const [actionLoading, setActionLoading] = useState<number | null>(null);
+  const [, setActionLoading] = useState<number | null>(null);
   const [paymentLoading, setPaymentLoading] = useState<number | null>(null);
   
   const [promoForm, setPromoForm] = useState({ title: '', description: '', price_info: 'Free', event_date: '' });

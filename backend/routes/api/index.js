@@ -13,6 +13,8 @@ router.delete('/appointment/:id', AppointmentController.Delete_Appointment.bind(
 router.post('/login', LoginController.Login_user.bind(LoginController));
 router.post('/logout', LoginController.Logout_user.bind(LoginController));
 router.post('/useraccount', LoginController.createuser.bind(LoginController));
+router.post('/send-otp', LoginController.send_otp.bind(LoginController));
+router.post('/verify-otp', LoginController.verify_otp_and_reset.bind(LoginController));
 
 router.post('/eventbooked', AppointmentController.Add_booking.bind(AppointmentController));
 

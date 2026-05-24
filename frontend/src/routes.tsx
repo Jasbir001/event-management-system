@@ -11,6 +11,7 @@ import EventBookedPage from "./pages/EventBookedPage";
 import MyBookingPage from "./pages/MyBookingPage";
 import ContactPage from "./pages/ContactPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 
 const AppRoutes: React.FC = () => (
   <BrowserRouter>
@@ -22,6 +23,7 @@ const AppRoutes: React.FC = () => (
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/useraccount" element={<CreateUserPage />} />
+        <Route path="/forget_password" element={<ForgotPasswordPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/eventbooked" element={<EventBookedPage />} />
         <Route path="/mybooking" element={<MyBookingPage />} />

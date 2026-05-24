@@ -12,6 +12,12 @@ const User = {
         db.query(q, [email], (err, res) => {
             callback(err, res ? res.rows[0] : null);
         });
+    },
+    update_password: (email, hashedPassword, callback) => {
+        const q = "UPDATE users SET password = $1 WHERE email = $2";
+        db.query(q, [hashedPassword, email], (err, res) => {
+            callback(err, res ? res.rowCount : 0);
+        });
     }
 };
 
