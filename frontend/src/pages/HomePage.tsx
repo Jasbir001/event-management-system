@@ -415,7 +415,7 @@ const HomePage: React.FC = () => {
                    Maybe Later
                  </button>
                  <button 
-                   onClick={() => { setShowPromoPopup(false); navigate('/mybooking'); }}
+                   onClick={() => { setShowPromoPopup(false); navigate('/eventbooked'); }}
                    className="flex-1 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2.5 font-bold text-white shadow-md hover:shadow-lg transition-transform hover:-translate-y-0.5"
                  >
                    Book Now!

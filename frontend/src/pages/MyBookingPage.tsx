@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Calendar, Clock, Users, Mail, Phone, CheckCircle, AlertCircle, XCircle } from "lucide-react";
+import { Calendar, Clock, Users, Phone, CheckCircle, AlertCircle, XCircle } from "lucide-react";
 
 interface Booking {
   id: number;
@@ -93,56 +93,64 @@ const MyBookingPage: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="mx-auto max-w-4xl grid gap-6 md:grid-cols-2">
-          {bookings.map((b) => (
-            <div
-              key={b.id}
-              className="group relative overflow-hidden rounded-3xl border border-gray-100 bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-500/10"
-            >
-              <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-500 to-indigo-600 rounded-l-3xl"></div>
-              
-              <div className="flex items-center justify-between border-b border-gray-50 pb-4">
-                <h2 className="text-xl font-bold text-gray-900 truncate pr-4">{b.name}</h2>
-                <StatusBadge status={b.status || 'pending'} />
-              </div>
-              
-              <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div className="flex items-center gap-3 text-sm text-gray-600 sm:col-span-2">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600">
-                    <Clock className="h-4 w-4" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">Duration</p>
-                    <p className="font-medium text-gray-900">
-                      {new Date(b.time).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })} 
-                      {' - '}
-                      {b.end_time ? new Date(b.end_time).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : 'TBD'}
-                    </p>
-                  </div>
+        <div className="mx-auto max-w-4xl">
+          <div className="mb-6 flex justify-end">
+            <a href="/eventbooked" className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-2.5 text-sm font-semibold text-white transition-transform hover:scale-105 shadow-md shadow-blue-500/30">
+              <Calendar className="h-4 w-4" />
+              Book New Event
+            </a>
+          </div>
+          <div className="grid gap-6 md:grid-cols-2">
+            {bookings.map((b) => (
+              <div
+                key={b.id}
+                className="group relative overflow-hidden rounded-3xl border border-gray-100 bg-white p-6 shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-500/10"
+              >
+                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-blue-500 to-indigo-600 rounded-l-3xl"></div>
+                
+                <div className="flex items-center justify-between border-b border-gray-50 pb-4">
+                  <h2 className="text-xl font-bold text-gray-900 truncate pr-4">{b.name}</h2>
+                  <StatusBadge status={b.status || 'pending'} />
                 </div>
+                
+                <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div className="flex items-center gap-3 text-sm text-gray-600 sm:col-span-2">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600">
+                      <Clock className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">Duration</p>
+                      <p className="font-medium text-gray-900">
+                        {new Date(b.time).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })} 
+                        {' - '}
+                        {b.end_time ? new Date(b.end_time).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' }) : 'TBD'}
+                      </p>
+                    </div>
+                  </div>
 
-                <div className="flex items-center gap-3 text-sm text-gray-600">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-purple-50 text-purple-600">
-                    <Users className="h-4 w-4" />
+                  <div className="flex items-center gap-3 text-sm text-gray-600">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-purple-50 text-purple-600">
+                      <Users className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">Party Size</p>
+                      <p className="font-medium text-gray-900">{formatSize(b.apxsize)}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">Party Size</p>
-                    <p className="font-medium text-gray-900">{formatSize(b.apxsize)}</p>
-                  </div>
-                </div>
 
-                <div className="flex items-center gap-3 text-sm text-gray-600">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-50 text-gray-600">
-                    <Phone className="h-4 w-4" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">Phone</p>
-                    <p className="font-medium text-gray-900">{b.phone}</p>
+                  <div className="flex items-center gap-3 text-sm text-gray-600">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-50 text-gray-600">
+                      <Phone className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">Phone</p>
+                      <p className="font-medium text-gray-900">{b.phone}</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
     </div>
