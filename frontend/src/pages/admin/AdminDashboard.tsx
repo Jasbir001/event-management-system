@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { CheckCircle, XCircle, Calendar, RefreshCw, MessageSquare, Trash2, List } from "lucide-react";
 
 interface Booking {
@@ -40,6 +41,15 @@ const formatSize = (sizeStr: string) => {
 
 const AdminDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'bookings' | 'appointments' | 'contacts'>('bookings');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("userLoggedIn") !== "true") {
+      navigate("/login");
+    } else if (localStorage.getItem("userRole") !== "admin") {
+      navigate("/");
+    }
+  }, [navigate]);
   
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [appointments, setAppointments] = useState<Appointment[]>([]);

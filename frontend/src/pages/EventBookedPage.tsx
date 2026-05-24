@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { ClipboardList, User, Mail, Phone, Calendar as CalendarIcon, Users, ArrowRight } from "lucide-react";
 
 const EventBookedPage: React.FC = () => {
@@ -14,6 +15,13 @@ const EventBookedPage: React.FC = () => {
     type: "idle",
     msg: ""
   });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("userLoggedIn") !== "true") {
+      navigate("/login");
+    }
+  }, [navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;

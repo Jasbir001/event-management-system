@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Calendar, Clock, Users, Phone, CheckCircle, AlertCircle, XCircle } from "lucide-react";
 
 interface Booking {
@@ -40,6 +41,13 @@ const StatusBadge = ({ status }: { status: string }) => {
 const MyBookingPage: React.FC = () => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("userLoggedIn") !== "true") {
+      navigate("/login");
+    }
+  }, [navigate]);
 
   useEffect(() => {
     const fetchBookings = async () => {
