@@ -90,15 +90,15 @@ const Footer: React.FC = () => {
             <ul className="space-y-4 text-sm text-gray-400">
               <li className="group flex items-start gap-3 transition-colors hover:text-white">
                 <MapPin className="mt-0.5 shrink-0 text-primary transition-transform group-hover:scale-110" size={18} />
-                <span>Sector 34A, Chandigarh, 160047</span>
+                <span>123 Event Street, Tech City, TC 10020</span>
               </li>
               <li className="group flex items-center gap-3 transition-colors hover:text-white">
                 <Mail className="shrink-0 text-primary transition-transform group-hover:scale-110" size={18} />
-                <a href="mailto:contact@eventxpress.com">contact@eventxpress.com</a>
+                <a href="mailto:nexbyte@gmail.com">nexbyte@gmail.com</a>
               </li>
               <li className="group flex items-center gap-3 transition-colors hover:text-white">
                 <Phone className="shrink-0 text-primary transition-transform group-hover:scale-110" size={18} />
-                <a href="tel:+917494996995">+91 7494996995</a>
+                <a href="tel:+15551234567">+1 (555) 123-4567</a>
               </li>
             </ul>
 
