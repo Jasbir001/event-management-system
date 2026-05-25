@@ -20,9 +20,9 @@ const LoginPage: React.FC = () => {
       });
       const data = await res.json();
       if (data.success) {
-        localStorage.setItem("userLoggedIn", "true");
-        localStorage.setItem("userRole", data.role || "user");
-        localStorage.setItem("userEmail", email);
+        sessionStorage.setItem("userLoggedIn", "true");
+        sessionStorage.setItem("userRole", data.role || "user");
+        sessionStorage.setItem("userEmail", email);
         
         if (data.role === "admin") {
           navigate("/admin");

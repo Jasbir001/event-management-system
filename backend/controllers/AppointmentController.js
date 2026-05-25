@@ -155,6 +155,23 @@ class AppointmentController {
             res.status(200).json({ success: true, msg: "Payment status updated to " + payment_status });
         });
     }
+
+    Send_Payment_Reminder(req, res) {
+        const id = req.params.id;
+        
+        bookingModel.get_by_id(id, (err, booking) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ success: false, msg: "Error fetching booking", error: err.message });
+            }
+            if (!booking) {
+                return res.status(404).json({ success: false, msg: "Booking not found" });
+            }
+
+            emailService.sendPaymentReminderEmail(booking.email, booking.name);
+            res.status(200).json({ success: true, msg: "Payment reminder sent successfully to " + booking.name });
+        });
+    }
 }
 
 module.exports = new AppointmentController();

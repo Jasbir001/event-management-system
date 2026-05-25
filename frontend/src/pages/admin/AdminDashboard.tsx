@@ -44,9 +44,9 @@ const AdminDashboard: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem("userLoggedIn") !== "true") {
+    if (sessionStorage.getItem("userLoggedIn") !== "true") {
       navigate("/login");
-    } else if (localStorage.getItem("userRole") !== "admin") {
+    } else if (sessionStorage.getItem("userRole") !== "admin") {
       navigate("/");
     }
   }, [navigate]);
@@ -120,6 +120,22 @@ const AdminDashboard: React.FC = () => {
       console.error(err);
     } finally {
       setPaymentLoading(null);
+    }
+  };
+
+  const handlePaymentReminder = async (id: number) => {
+    if (!window.confirm("Send a payment reminder email to this user?")) return;
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/booking/${id}/remind-payment` : `/api/booking/${id}/remind-payment`;
+      const res = await fetch(apiUrl, { method: "POST" });
+      if (res.ok) {
+        alert("Payment reminder sent successfully!");
+      } else {
+        alert("Failed to send payment reminder.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error sending payment reminder.");
     }
   };
 
@@ -252,12 +268,22 @@ const AdminDashboard: React.FC = () => {
                           </div>
                         </td>
                         <td className="px-6 py-4 text-right">
-                          {(b.status === 'pending' || !b.status) && (
-                            <div className="flex justify-end gap-2">
-                              <button onClick={() => handleStatusUpdate(b.id, 'approved')} className="text-green-600 hover:text-green-800"><CheckCircle className="w-5 h-5"/></button>
-                              <button onClick={() => handleStatusUpdate(b.id, 'rejected')} className="text-red-600 hover:text-red-800"><XCircle className="w-5 h-5"/></button>
-                            </div>
-                          )}
+                          <div className="flex flex-col items-end gap-2">
+                            {(b.status === 'pending' || !b.status) && (
+                              <div className="flex justify-end gap-2">
+                                <button onClick={() => handleStatusUpdate(b.id, 'approved')} className="text-green-600 hover:text-green-800" title="Approve"><CheckCircle className="w-5 h-5"/></button>
+                                <button onClick={() => handleStatusUpdate(b.id, 'rejected')} className="text-red-600 hover:text-red-800" title="Reject"><XCircle className="w-5 h-5"/></button>
+                              </div>
+                            )}
+                            {b.status === 'approved' && (!b.payment_status || b.payment_status === 'pending') && (
+                              <button 
+                                onClick={() => handlePaymentReminder(b.id)} 
+                                className="text-xs font-medium text-amber-600 hover:text-amber-800 bg-amber-50 hover:bg-amber-100 px-2 py-1 rounded transition-colors"
+                              >
+                                Remind Payment
+                              </button>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     ))

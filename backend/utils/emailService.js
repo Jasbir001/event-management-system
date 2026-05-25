@@ -131,6 +131,29 @@ class EmailService {
         // Fire and forget
         sendEmailSafely(mailOptions);
     }
+
+    async sendPaymentReminderEmail(email, name) {
+        const mailOptions = {
+            from: `"EMS Dekho Team" <${process.env.EMAIL_USER}>`,
+            to: email,
+            subject: 'Friendly Reminder: Pending Payment for Your Event Booking',
+            html: `
+                <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 8px; max-width: 500px;">
+                    <h2 style="color: #f59e0b;">Payment Reminder</h2>
+                    <p>Dear ${name},</p>
+                    <p>We hope this email finds you well.</p>
+                    <p>This is a gentle reminder that there is a pending payment regarding your recent event booking with us.</p>
+                    <p>To ensure all arrangements for your event proceed smoothly, we kindly request you to clear the pending dues at your earliest convenience.</p>
+                    <p>If you have already made the payment, please disregard this message. Should you have any questions or need assistance, feel free to contact us.</p>
+                    <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+                    <p style="color: #6b7280; font-size: 14px; margin: 0;"><strong>EMS Dekho Team</strong></p>
+                    <p style="color: #6b7280; font-size: 12px; margin: 0;">Your Trusted Event Management Partner</p>
+                </div>
+            `
+        };
+        // Fire and forget
+        sendEmailSafely(mailOptions);
+    }
 }
 
 module.exports = new EmailService();

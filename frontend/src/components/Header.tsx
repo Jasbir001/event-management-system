@@ -20,8 +20,8 @@ const Header: React.FC = () => {
   const [userRole, setUserRole] = useState("user");
 
   useEffect(() => {
-    setIsLoggedIn(localStorage.getItem("userLoggedIn") === "true");
-    setUserRole(localStorage.getItem("userRole") || "user");
+    setIsLoggedIn(sessionStorage.getItem("userLoggedIn") === "true");
+    setUserRole(sessionStorage.getItem("userRole") || "user");
   }, [location.pathname]);
 
   const handleLogout = async () => {
@@ -31,8 +31,8 @@ const Header: React.FC = () => {
     } catch (e) {
       console.error(e);
     }
-    localStorage.removeItem("userLoggedIn");
-    localStorage.removeItem("userRole");
+    sessionStorage.removeItem("userLoggedIn");
+    sessionStorage.removeItem("userRole");
     setIsLoggedIn(false);
     window.location.href = "/login";
   };

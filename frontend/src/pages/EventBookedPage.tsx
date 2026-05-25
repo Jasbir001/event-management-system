@@ -18,7 +18,7 @@ const EventBookedPage: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (localStorage.getItem("userLoggedIn") !== "true") {
+    if (sessionStorage.getItem("userLoggedIn") !== "true") {
       navigate("/login");
     }
   }, [navigate]);

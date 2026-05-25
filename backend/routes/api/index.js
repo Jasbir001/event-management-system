@@ -67,6 +67,7 @@ router.get('/eventbooks', (req, res) => {
 router.get('/mybooking', AppointmentController.Get_bookings.bind(AppointmentController));
 router.put('/booking/:id/status', AppointmentController.Update_booking_status.bind(AppointmentController));
 router.put('/booking/:id/payment', AppointmentController.Update_payment_status.bind(AppointmentController));
+router.post('/booking/:id/remind-payment', AppointmentController.Send_Payment_Reminder.bind(AppointmentController));
 
 router.post('/reviews', ReviewController.Add_review.bind(ReviewController));
 router.get('/reviews', ReviewController.Get_reviews.bind(ReviewController));

@@ -67,8 +67,8 @@ const HomePage: React.FC = () => {
   const [showPromoPopup, setShowPromoPopup] = useState(false);
 
   useEffect(() => {
-    setIsLoggedIn(localStorage.getItem("userLoggedIn") === "true");
-    setUserRole(localStorage.getItem("userRole") || "user");
+    setIsLoggedIn(sessionStorage.getItem("userLoggedIn") === "true");
+    setUserRole(sessionStorage.getItem("userRole") || "user");
     fetchReviews();
     fetchPromotion();
   }, []);

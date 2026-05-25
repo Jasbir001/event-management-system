@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Chat from "./components/Chat";
+import SessionTimeout from "./components/SessionTimeout";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import CreateUserPage from "./pages/CreateUserPage";
@@ -15,6 +16,7 @@ import ForgotPasswordPage from "./pages/ForgotPasswordPage";
 
 const AppRoutes: React.FC = () => (
   <BrowserRouter>
+    <SessionTimeout />
     <Header />
     <Chat />
     {/* Main content wrapper */}
