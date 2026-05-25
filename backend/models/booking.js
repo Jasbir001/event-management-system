@@ -24,6 +24,10 @@ const Booking = {
     update_payment_status: (id, payment_status, callback) => {
         const q = `update booking set payment_status = $1 where id = $2`;
         db.query(q, [payment_status, id], (err, res) => callback(err, res ? res.rows : null));
+    },
+    get_by_id: (id, callback) => {
+        const q = `select * from booking where id = $1`;
+        db.query(q, [id], (err, res) => callback(err, res ? res.rows[0] : null));
     }
 }
 

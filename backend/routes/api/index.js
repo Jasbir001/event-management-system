@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 
-const AppointmentController = require('../../../Controller/AppointmentController');
-const LoginController = require('../../../Controller/LoginController');
-const ContactController = require('../../../Controller/ContactController');
-const ReviewController = require('../../../Controller/ReviewController');
+const AppointmentController = require('../../controllers/AppointmentController');
+const LoginController = require('../../controllers/LoginController');
+const ContactController = require('../../controllers/ContactController');
+const ReviewController = require('../../controllers/ReviewController');
 
 router.post('/submit_from', AppointmentController.Add_appointment.bind(AppointmentController));
 router.get('/appointment', AppointmentController.Get_Appointments.bind(AppointmentController));
@@ -71,7 +71,7 @@ router.put('/booking/:id/payment', AppointmentController.Update_payment_status.b
 router.post('/reviews', ReviewController.Add_review.bind(ReviewController));
 router.get('/reviews', ReviewController.Get_reviews.bind(ReviewController));
 
-const PromotionController = require('../../../Controller/PromotionController');
+const PromotionController = require('../../controllers/PromotionController');
 router.post('/promotions', PromotionController.Add_promotion);
 router.get('/promotions/active', PromotionController.Get_active_promotion);
 

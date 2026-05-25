@@ -1,4 +1,5 @@
-const contactModel = require('../Models/Contact');
+const contactModel = require('../models/Contact');
+const emailService = require('../utils/emailService');
 
 class ContactController {
     Enquire_Contact(req, res) {
@@ -14,6 +15,7 @@ class ContactController {
                 console.error(err);
                 return res.status(500).json({ success: false, msg: 'Something went wrong try again', error: err.message });
             }
+            emailService.sendEnquiryAcknowledgment(data.Email, data.Name);
             res.status(200).json({ success: true, msg: "Your Enquiry has been Submitted Successfully" });
         });
     }

@@ -1,7 +1,7 @@
-const Admin = require('../Models/Admin');
-const User = require('../Models/User');
+const Admin = require('../models/Admin');
+const User = require('../models/User');
 const bcrypt = require('bcryptjs');
-const nodemailer = require('nodemailer');
+const emailService = require('../utils/emailService');
 
 const otpStorage = new Map(); // Store OTPs in memory: { email: { otp: string, expiresAt: number } }
 
@@ -94,33 +94,10 @@ class LoginController {
             const expiresAt = Date.now() + 5 * 60 * 1000; // 5 minutes validity
             otpStorage.set(email, { otp, expiresAt });
 
-            try {
-                const transporter = nodemailer.createTransport({
-                    service: 'gmail',
-                    auth: {
-                        user: process.env.EMAIL_USER,
-                        pass: process.env.EMAIL_PASS
-                    }
-                });
-
-                const mailOptions = {
-                    from: `"Event Management System" <${process.env.EMAIL_USER}>`,
-                    to: email,
-                    subject: 'Password Reset OTP',
-                    html: `
-                        <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 8px; max-width: 500px;">
-                            <h2 style="color: #2563eb;">Password Reset Verification</h2>
-                            <p>You requested a password reset. Use the following OTP to verify your identity:</p>
-                            <h1 style="background: #f3f4f6; padding: 10px; border-radius: 6px; letter-spacing: 5px; text-align: center;">${otp}</h1>
-                            <p style="color: #6b7280; font-size: 14px;">This OTP is valid for 5 minutes. Do not share it with anyone.</p>
-                        </div>
-                    `
-                };
-
-                await transporter.sendMail(mailOptions);
+            const success = await emailService.sendOTP(email, otp);
+            if (success) {
                 res.status(200).json({ success: true, msg: "OTP sent to your email successfully" });
-            } catch (error) {
-                console.error("Nodemailer Error: ", error);
+            } else {
                 res.status(500).json({ success: false, msg: "Failed to send OTP email. Please check server credentials." });
             }
         });

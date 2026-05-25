@@ -1,4 +1,4 @@
-const Promotion = require("../Models/Promotion");
+const Promotion = require("../models/Promotion");
 
 const Add_promotion = (req, res) => {
   const { title, description, price_info, event_date } = req.body;

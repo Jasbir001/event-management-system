@@ -1,5 +1,6 @@
-const appointmentModel = require('../Models/Appointment');
-const bookingModel = require('../Models/booking');
+const appointmentModel = require('../models/Appointment');
+const bookingModel = require('../models/booking');
+const emailService = require('../utils/emailService');
 
 class AppointmentController {
     Add_appointment(req, res) {
@@ -77,6 +78,13 @@ class AppointmentController {
                     console.error(err);
                     return res.status(500).json({ success: false, msg: "Error in Booking event. Try Again.", error: err.message });
                 }
+                
+                // Send email to User
+                emailService.sendBookingConfirmation(data.Email, data.Name, data);
+                
+                // Send email to Admin
+                emailService.sendAdminBookingNotification(data);
+
                 res.status(200).json({ success: true, msg: data.Name + ", your Event is Booked successfully and is Pending Approval!" });
             });
         });
@@ -121,6 +129,12 @@ class AppointmentController {
                 console.error(err);
                 return res.status(500).json({ success: false, msg: "Error updating status", error: err.message });
             }
+            // Fetch booking details to send email
+            bookingModel.get_by_id(id, (err, booking) => {
+                if (!err && booking) {
+                    emailService.sendBookingStatusUpdate(booking.email, booking.name, status);
+                }
+            });
             res.status(200).json({ success: true, msg: "Booking status updated to " + status });
         });
     }
