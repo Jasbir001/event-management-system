@@ -9,7 +9,7 @@ const port = process.env.PORT || 4002;
 
 app.use(urlsp);
 app.use(cors({
-  origin: "https://event-management-system-np1lpzzif-jasbirnexbyte-9567s-projects.vercel.app",
+  origin: "https://event-management-sys-onpin-ps.vercel.app",
   credentials: true
 }));
 app.use(express.json()); // for JSON APIs
