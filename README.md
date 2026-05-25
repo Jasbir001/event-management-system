@@ -1,4 +1,4 @@
-📌 Event Management System (EMS)     
+📌 Event Management System (EMS)
 
 A full-stack Event Management System built using Node.js, Express.js, MongoDB, and EJS. This project allows users to manage appointments, bookings, and contact requests efficiently.
 
@@ -30,17 +30,17 @@ Other Tools: Nodemon, bcrypt
 Project_EMS/
 │
 ├── Controller/
-│   ├── AppointmentController.js
-│   ├── ContactController.js
-│   └── LoginController.js
+│ ├── AppointmentController.js
+│ ├── ContactController.js
+│ └── LoginController.js
 │
 ├── Modal/
-│   ├── Appointment.js
-│   ├── booking.js
-│   └── Contact.js
+│ ├── Appointment.js
+│ ├── booking.js
+│ └── Contact.js
 │
 ├── database/
-│   └── mydb.js
+│ └── mydb.js
 │
 ├── main.js
 ├── newuser.ejs
@@ -56,7 +56,7 @@ npm install
 
 3️⃣ Setup Database
 Make sure MongoDB is running locally
-Update your MongoDB connection in: 
+Update your MongoDB connection in:
 
 4️⃣ Run the project
 npm start
@@ -73,6 +73,6 @@ Better UI (React frontend)
 
 👨‍💻 Author
 
-Jasbir Singh
+Jasbir Verma
 
 MERN Stack Developer
