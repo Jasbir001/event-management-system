@@ -24,8 +24,12 @@ app.get(/.*/, (req, res) => {
 });
 
 if (require.main === module) {
-  app.listen(port, () => {
+  const initTables = require('./backend/database/init_tables');
+  
+  app.listen(port, async () => {
     console.log(`Server is running on port ${port}`);
+    // Automatically create database tables if they do not exist
+    await initTables();
   });
 }
 
