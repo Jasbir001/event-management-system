@@ -18,14 +18,26 @@ const initTables = async () => {
         console.log("✔ 'users' table ensured.");
 
         await pool.query(`
-            CREATE TABLE IF NOT EXISTS admin (
+            CREATE TABLE IF NOT EXISTS admins (
                 id SERIAL PRIMARY KEY,
                 email VARCHAR(255) UNIQUE NOT NULL,
                 password VARCHAR(255) NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `);
-        console.log("✔ 'admin' table ensured.");
+        console.log("✔ 'admins' table ensured.");
+
+        // Check if admin already exists
+        const checkQuery = "SELECT * FROM admins WHERE email = $1";
+        const result = await pool.query(checkQuery, ['admin@ems.com']);
+        
+        if (result.rows.length === 0) {
+            const bcrypt = require('bcryptjs');
+            const hashedPassword = await bcrypt.hash('admin123', 10);
+            const insertQuery = "INSERT INTO admins (email, password) VALUES ($1, $2)";
+            await pool.query(insertQuery, ['admin@ems.com', hashedPassword]);
+            console.log("✔ Default admin created (admin@ems.com / admin123).");
+        }
 
         await pool.query(`
             CREATE TABLE IF NOT EXISTS promotions (
