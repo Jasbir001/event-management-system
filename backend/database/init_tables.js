@@ -67,6 +67,18 @@ const initTables = async () => {
         `);
         console.log("✔ 'bookings' table ensured.");
 
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS contact (
+                id SERIAL PRIMARY KEY,
+                name VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                subject VARCHAR(255) NOT NULL,
+                message TEXT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        `);
+        console.log("✔ 'contact' table ensured.");
+
         // Just in case alter is needed for existing tables without payment_status
         try {
             await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS payment_status VARCHAR(50) DEFAULT 'Pending';`);
