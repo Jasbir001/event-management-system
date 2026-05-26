@@ -75,7 +75,7 @@ const HomePage: React.FC = () => {
 
   const fetchPromotion = async () => {
     try {
-      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/promotions/active` : '/api/promotions/active';
+      const apiUrl = ((import.meta.env.VITE_API_URL || '').endsWith('/api') ? `${import.meta.env.VITE_API_URL}/promotions/active` : (import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/promotions/active` : '/api/promotions/active'));
       const res = await fetch(apiUrl);
       if (res.ok) {
         const data = await res.json();
@@ -91,7 +91,7 @@ const HomePage: React.FC = () => {
 
   const fetchReviews = async () => {
     try {
-      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/reviews` : '/api/reviews';
+      const apiUrl = ((import.meta.env.VITE_API_URL || '').endsWith('/api') ? `${import.meta.env.VITE_API_URL}/reviews` : (import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/reviews` : '/api/reviews'));
       const res = await fetch(apiUrl);
       const data = await res.json();
       if (Array.isArray(data) && data.length > 0) {
@@ -105,7 +105,7 @@ const HomePage: React.FC = () => {
   const handleReviewSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/reviews` : '/api/reviews';
+      const apiUrl = ((import.meta.env.VITE_API_URL || '').endsWith('/api') ? `${import.meta.env.VITE_API_URL}/reviews` : (import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/reviews` : '/api/reviews'));
       const res = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -132,7 +132,7 @@ const HomePage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/submit_from` : '/api/submit_from';
+      const apiUrl = ((import.meta.env.VITE_API_URL || '').endsWith('/api') ? `${import.meta.env.VITE_API_URL}/submit_from` : (import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/submit_from` : '/api/submit_from'));
       const res = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

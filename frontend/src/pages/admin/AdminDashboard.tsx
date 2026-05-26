@@ -65,9 +65,9 @@ const AdminDashboard: React.FC = () => {
   const fetchAllData = async () => {
     setLoading(true);
     try {
-      const bApiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/mybooking` : '/api/mybooking';
-      const aApiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/appointment` : '/api/appointment';
-      const cApiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/contact` : '/api/contact';
+      const bApiUrl = ((import.meta.env.VITE_API_URL || '').endsWith('/api') ? `${import.meta.env.VITE_API_URL}/mybooking` : (import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/mybooking` : '/api/mybooking'));
+      const aApiUrl = ((import.meta.env.VITE_API_URL || '').endsWith('/api') ? `${import.meta.env.VITE_API_URL}/appointment` : (import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/appointment` : '/api/appointment'));
+      const cApiUrl = ((import.meta.env.VITE_API_URL || '').endsWith('/api') ? `${import.meta.env.VITE_API_URL}/contact` : (import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/contact` : '/api/contact'));
       
       const [bRes, aRes, cRes] = await Promise.all([
         fetch(`${bApiUrl}?role=admin`),
@@ -165,7 +165,7 @@ const AdminDashboard: React.FC = () => {
     e.preventDefault();
     setPromoLoading(true);
     try {
-      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/promotions` : '/api/promotions';
+      const apiUrl = ((import.meta.env.VITE_API_URL || '').endsWith('/api') ? `${import.meta.env.VITE_API_URL}/promotions` : (import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/promotions` : '/api/promotions'));
       const res = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

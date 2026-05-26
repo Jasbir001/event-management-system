@@ -39,7 +39,7 @@ const EventBookedPage: React.FC = () => {
 
     setStatus({ type: "loading", msg: "Processing booking..." });
     try {
-      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/eventbooked` : '/api/eventbooked';
+      const apiUrl = ((import.meta.env.VITE_API_URL || '').endsWith('/api') ? `${import.meta.env.VITE_API_URL}/eventbooked` : (import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/eventbooked` : '/api/eventbooked'));
       const res = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

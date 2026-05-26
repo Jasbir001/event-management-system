@@ -23,7 +23,7 @@ const ForgotPasswordPage: React.FC = () => {
     setStatus({ type: "loading", msg: "Sending OTP to your email..." });
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/send-otp` : '/api/send-otp';
+      const apiUrl = ((import.meta.env.VITE_API_URL || '').endsWith('/api') ? `${import.meta.env.VITE_API_URL}/send-otp` : (import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/send-otp` : '/api/send-otp'));
       const res = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -54,7 +54,7 @@ const ForgotPasswordPage: React.FC = () => {
     setStatus({ type: "loading", msg: "Verifying OTP and updating password..." });
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/verify-otp` : '/api/verify-otp';
+      const apiUrl = ((import.meta.env.VITE_API_URL || '').endsWith('/api') ? `${import.meta.env.VITE_API_URL}/verify-otp` : (import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/verify-otp` : '/api/verify-otp'));
       const res = await fetch(apiUrl, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

@@ -54,9 +54,7 @@ const MyBookingPage: React.FC = () => {
       try {
         const role = sessionStorage.getItem("userRole") || "user";
         const email = sessionStorage.getItem("userEmail") || "";
-        const apiUrl = import.meta.env.VITE_API_URL 
-          ? `${import.meta.env.VITE_API_URL}/mybooking?role=${role}&email=${encodeURIComponent(email)}` 
-          : `/api/mybooking?role=${role}&email=${encodeURIComponent(email)}`;
+        const apiUrl = ((import.meta.env.VITE_API_URL || '').endsWith('/api') ? `${import.meta.env.VITE_API_URL}/mybooking?role=${role}&email=${encodeURIComponent(email)}` : (import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/mybooking?role=${role}&email=${encodeURIComponent(email)}` : `/api/mybooking?role=${role}&email=${encodeURIComponent(email)}`));
         const res = await fetch(apiUrl);
         if (res.ok) {
           const data = await res.json();

@@ -26,7 +26,7 @@ const Header: React.FC = () => {
 
   const handleLogout = async () => {
     try {
-      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/logout` : '/api/logout';
+      const apiUrl = ((import.meta.env.VITE_API_URL || '').endsWith('/api') ? `${import.meta.env.VITE_API_URL}/logout` : (import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/logout` : '/api/logout'));
       await fetch(apiUrl, { method: "POST" });
     } catch (e) {
       console.error(e);
