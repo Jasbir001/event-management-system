@@ -3,7 +3,7 @@ const pool = require('./mydb');
 const initTables = async () => {
     try {
         console.log("Initializing database tables...");
-        
+
         await pool.query(`
             CREATE TABLE IF NOT EXISTS users (
                 id SERIAL PRIMARY KEY,
@@ -30,7 +30,6 @@ const initTables = async () => {
         // Check if admin already exists
         const checkQuery = "SELECT * FROM admins WHERE email = $1";
         const result = await pool.query(checkQuery, ['admin@ems.com']);
-        
         if (result.rows.length === 0) {
             const bcrypt = require('bcryptjs');
             const hashedPassword = await bcrypt.hash('admin123', 10);
@@ -42,13 +41,19 @@ const initTables = async () => {
         await pool.query(`
             CREATE TABLE IF NOT EXISTS promotions (
                 id SERIAL PRIMARY KEY,
-                code VARCHAR(50) UNIQUE NOT NULL,
-                description TEXT,
-                discount_percentage INT NOT NULL,
-                is_active BOOLEAN DEFAULT true,
+                title VARCHAR(255) NOT NULL,
+                description TEXT NOT NULL,
+                price_info VARCHAR(100) DEFAULT 'Free',
+                event_date TIMESTAMP NOT NULL,
+                is_active BOOLEAN DEFAULT TRUE,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `);
+        // keep ALTERs for backward compatibility
+        await pool.query(`ALTER TABLE promotions ADD COLUMN IF NOT EXISTS title VARCHAR(255) NOT NULL DEFAULT 'Promotion';`);
+        await pool.query(`ALTER TABLE promotions ADD COLUMN IF NOT EXISTS price_info VARCHAR(100) DEFAULT 'Free';`);
+        await pool.query(`ALTER TABLE promotions ADD COLUMN IF NOT EXISTS event_date TIMESTAMP NOT NULL DEFAULT NOW();`);
+        await pool.query(`ALTER TABLE promotions ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT TRUE;`);
         console.log("✔ 'promotions' table ensured.");
 
         await pool.query(`
@@ -63,17 +68,17 @@ const initTables = async () => {
         `);
         console.log("✔ 'reviews' table ensured.");
 
-        // We also need the 'bookings' table, let's make sure it exists
         await pool.query(`
             CREATE TABLE IF NOT EXISTS bookings (
                 id SERIAL PRIMARY KEY,
-                user_email VARCHAR(255) NOT NULL,
-                event_name VARCHAR(255) NOT NULL,
-                event_date DATE NOT NULL,
-                guests INT NOT NULL,
-                special_requests TEXT,
-                status VARCHAR(50) DEFAULT 'Pending',
-                payment_status VARCHAR(50) DEFAULT 'Pending',
+                name VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                phone VARCHAR(50),
+                time TIMESTAMP NOT NULL,
+                end_time TIMESTAMP NOT NULL,
+                apxsize VARCHAR(100),
+                status VARCHAR(50) DEFAULT 'pending',
+                payment_status VARCHAR(50) DEFAULT 'pending',
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `);
@@ -107,7 +112,7 @@ const initTables = async () => {
 
         // Just in case alter is needed for existing tables without payment_status
         try {
-            await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS payment_status VARCHAR(50) DEFAULT 'Pending';`);
+            await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS payment_status VARCHAR(50) DEFAULT 'pending';`);
         } catch(e) {}
 
         console.log("Database initialization complete.");
