@@ -92,7 +92,7 @@ const AdminDashboard: React.FC = () => {
   const handleStatusUpdate = async (id: number, status: 'approved' | 'rejected') => {
     setActionLoading(id);
     try {
-      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/booking/${id}/status` : `/api/booking/${id}/status`;
+      const apiUrl = ((import.meta.env.VITE_API_URL || '').endsWith('/api') ? `${import.meta.env.VITE_API_URL}/booking/${id}/status` : (import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/booking/${id}/status` : `/api/booking/${id}/status`));
       const res = await fetch(apiUrl, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -109,7 +109,7 @@ const AdminDashboard: React.FC = () => {
   const handlePaymentUpdate = async (id: number, payment_status: 'received' | 'pending') => {
     setPaymentLoading(id);
     try {
-      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/booking/${id}/payment` : `/api/booking/${id}/payment`;
+      const apiUrl = ((import.meta.env.VITE_API_URL || '').endsWith('/api') ? `${import.meta.env.VITE_API_URL}/booking/${id}/payment` : (import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/booking/${id}/payment` : `/api/booking/${id}/payment`));
       const res = await fetch(apiUrl, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -126,7 +126,7 @@ const AdminDashboard: React.FC = () => {
   const handlePaymentReminder = async (id: number) => {
     if (!window.confirm("Send a payment reminder email to this user?")) return;
     try {
-      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/booking/${id}/remind-payment` : `/api/booking/${id}/remind-payment`;
+      const apiUrl = ((import.meta.env.VITE_API_URL || '').endsWith('/api') ? `${import.meta.env.VITE_API_URL}/booking/${id}/remind-payment` : (import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/booking/${id}/remind-payment` : `/api/booking/${id}/remind-payment`));
       const res = await fetch(apiUrl, { method: "POST" });
       if (res.ok) {
         alert("Payment reminder sent successfully!");
@@ -142,7 +142,7 @@ const AdminDashboard: React.FC = () => {
   const handleDeleteAppointment = async (id: number) => {
     if (!window.confirm("Delete this appointment request?")) return;
     try {
-      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/appointment/${id}` : `/api/appointment/${id}`;
+      const apiUrl = ((import.meta.env.VITE_API_URL || '').endsWith('/api') ? `${import.meta.env.VITE_API_URL}/appointment/${id}` : (import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/appointment/${id}` : `/api/appointment/${id}`));
       const res = await fetch(apiUrl, { method: "DELETE" });
       if (res.ok) setAppointments(appointments.filter(a => a.id !== id));
     } catch (err) {
@@ -153,7 +153,7 @@ const AdminDashboard: React.FC = () => {
   const handleDeleteContact = async (id: number) => {
     if (!window.confirm("Delete this contact message?")) return;
     try {
-      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/contact/${id}` : `/api/contact/${id}`;
+      const apiUrl = ((import.meta.env.VITE_API_URL || '').endsWith('/api') ? `${import.meta.env.VITE_API_URL}/contact/${id}` : (import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/contact/${id}` : `/api/contact/${id}`));
       const res = await fetch(apiUrl, { method: "DELETE" });
       if (res.ok) setContacts(contacts.filter(c => c.id !== id));
     } catch (err) {

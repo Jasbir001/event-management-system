@@ -28,7 +28,9 @@ const AppRoutes: React.FC = () => (
         <Route path="/forget_password" element={<ForgotPasswordPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/eventbooked" element={<EventBookedPage />} />
+        <Route path="/booked" element={<EventBookedPage />} />
         <Route path="/mybooking" element={<MyBookingPage />} />
+        <Route path="/booking" element={<MyBookingPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/admin" element={<AdminDashboard />} />
       </Routes>
