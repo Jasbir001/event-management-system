@@ -110,6 +110,17 @@ const initTables = async () => {
         `);
         console.log("✔ 'appointment' table ensured.");
 
+        // Add missing columns to appointment table if it already existed
+        try {
+            await pool.query(`ALTER TABLE appointment ADD COLUMN IF NOT EXISTS email VARCHAR(255) NOT NULL DEFAULT 'unknown@example.com';`);
+            await pool.query(`ALTER TABLE appointment ADD COLUMN IF NOT EXISTS mobile VARCHAR(20);`);
+            await pool.query(`ALTER TABLE appointment ADD COLUMN IF NOT EXISTS address TEXT;`);
+            await pool.query(`ALTER TABLE appointment ADD COLUMN IF NOT EXISTS event_type VARCHAR(255);`);
+            await pool.query(`ALTER TABLE appointment ADD COLUMN IF NOT EXISTS appointment_datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;`);
+        } catch(e) {
+            console.error("Error adding columns to appointment table:", e);
+        }
+
         // Just in case alter is needed for existing tables without payment_status
         try {
             await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS payment_status VARCHAR(50) DEFAULT 'pending';`);
