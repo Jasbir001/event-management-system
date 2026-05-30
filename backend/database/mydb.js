@@ -8,7 +8,7 @@ const pool = new Pool({
     },
     max: 10,
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 2000,
+    connectionTimeoutMillis: 15000, // Increased to 15 seconds to prevent database connection timeouts from India to Render (Oregon)
 });
 
 pool.connect((err, client, release) => {
