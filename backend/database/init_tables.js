@@ -121,10 +121,15 @@ const initTables = async () => {
             console.error("Error adding columns to appointment table:", e);
         }
 
-        // Just in case alter is needed for existing tables without payment_status
+        // Just in case alter is needed for existing tables
         try {
+            await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;`);
+            await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS end_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;`);
+            await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS apxsize VARCHAR(100);`);
             await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS payment_status VARCHAR(50) DEFAULT 'pending';`);
-        } catch(e) {}
+        } catch(e) {
+            console.error("Error altering bookings table:", e);
+        }
 
         console.log("Database initialization complete.");
     } catch (err) {
