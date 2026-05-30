@@ -2,31 +2,31 @@ const db = require("../database/mydb");
 
 const Booking = {
     create: (data, callback) => {
-        const q = `insert into bookings (name, email, phone, time, end_time, apxsize, status) values ($1, $2, $3, $4, $5, $6, 'pending')`;
+        const q = `insert into event_bookings (name, email, phone, time, end_time, apxsize, status) values ($1, $2, $3, $4, $5, $6, 'pending')`;
         db.query(q, [data.Name, data.Email, data.Phone, data.StartTime, data.EndTime, data.Apxsize], (err, res) => callback(err, res ? res.rows : null));
     },
     list_booking: (callback) => {
-        const q = `select * from bookings order by id desc`;
+        const q = `select * from event_bookings order by id desc`;
         db.query(q, (err, res) => callback(err, res ? res.rows : null));
     },
     list_user_booking: (email, callback) => {
-        const q = `select * from bookings where email = $1 order by id desc`;
+        const q = `select * from event_bookings where email = $1 order by id desc`;
         db.query(q, [email], (err, res) => callback(err, res ? res.rows : null));
     },
     check_overlap: (startTime, endTime, callback) => {
-        const q = `select * from bookings where status != 'rejected' and time < $1 and end_time > $2`;
+        const q = `select * from event_bookings where status != 'rejected' and time < $1 and end_time > $2`;
         db.query(q, [endTime, startTime], (err, res) => callback(err, res ? res.rows : null));
     },
     update_status: (id, status, callback) => {
-        const q = `update bookings set status = $1 where id = $2`;
+        const q = `update event_bookings set status = $1 where id = $2`;
         db.query(q, [status, id], (err, res) => callback(err, res ? res.rows : null));
     },
     update_payment_status: (id, payment_status, callback) => {
-        const q = `update bookings set payment_status = $1 where id = $2`;
+        const q = `update event_bookings set payment_status = $1 where id = $2`;
         db.query(q, [payment_status, id], (err, res) => callback(err, res ? res.rows : null));
     },
     get_by_id: (id, callback) => {
-        const q = `select * from bookings where id = $1`;
+        const q = `select * from event_bookings where id = $1`;
         db.query(q, [id], (err, res) => callback(err, res ? res.rows[0] : null));
     }
 }

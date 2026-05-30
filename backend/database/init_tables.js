@@ -69,7 +69,7 @@ const initTables = async () => {
         console.log("✔ 'reviews' table ensured.");
 
         await pool.query(`
-            CREATE TABLE IF NOT EXISTS bookings (
+            CREATE TABLE IF NOT EXISTS event_bookings (
                 id SERIAL PRIMARY KEY,
                 name VARCHAR(255) NOT NULL,
                 email VARCHAR(255) NOT NULL,
@@ -82,7 +82,7 @@ const initTables = async () => {
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `);
-        console.log("✔ 'bookings' table ensured.");
+        console.log("✔ 'event_bookings' table ensured.");
 
         await pool.query(`
             CREATE TABLE IF NOT EXISTS contact (
@@ -121,18 +121,18 @@ const initTables = async () => {
             console.error("Error adding columns to appointment table:", e);
         }
 
-        // Add ALL missing columns to bookings table if it already existed
+        // Add ALL missing columns to event_bookings table if it already existed
         try {
-            await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS name VARCHAR(255) NOT NULL DEFAULT 'Unknown';`);
-            await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS email VARCHAR(255) NOT NULL DEFAULT 'unknown@example.com';`);
-            await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS phone VARCHAR(50);`);
-            await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;`);
-            await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS end_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;`);
-            await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS apxsize VARCHAR(100);`);
-            await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS status VARCHAR(50) DEFAULT 'pending';`);
-            await pool.query(`ALTER TABLE bookings ADD COLUMN IF NOT EXISTS payment_status VARCHAR(50) DEFAULT 'pending';`);
+            await pool.query(`ALTER TABLE event_bookings ADD COLUMN IF NOT EXISTS name VARCHAR(255) NOT NULL DEFAULT 'Unknown';`);
+            await pool.query(`ALTER TABLE event_bookings ADD COLUMN IF NOT EXISTS email VARCHAR(255) NOT NULL DEFAULT 'unknown@example.com';`);
+            await pool.query(`ALTER TABLE event_bookings ADD COLUMN IF NOT EXISTS phone VARCHAR(50);`);
+            await pool.query(`ALTER TABLE event_bookings ADD COLUMN IF NOT EXISTS time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;`);
+            await pool.query(`ALTER TABLE event_bookings ADD COLUMN IF NOT EXISTS end_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;`);
+            await pool.query(`ALTER TABLE event_bookings ADD COLUMN IF NOT EXISTS apxsize VARCHAR(100);`);
+            await pool.query(`ALTER TABLE event_bookings ADD COLUMN IF NOT EXISTS status VARCHAR(50) DEFAULT 'pending';`);
+            await pool.query(`ALTER TABLE event_bookings ADD COLUMN IF NOT EXISTS payment_status VARCHAR(50) DEFAULT 'pending';`);
         } catch(e) {
-            console.error("Error altering bookings table:", e);
+            console.error("Error altering event_bookings table:", e);
         }
 
         console.log("Database initialization complete.");
