@@ -1,6 +1,52 @@
 const nodemailer = require('nodemailer');
 const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../../.env') });
+const https = require('https');
+
+const sendEmailViaBrevo = (mailOptions) => {
+    return new Promise((resolve) => {
+        const postData = JSON.stringify({
+            sender: { name: "EMS Dekho Team", email: process.env.EMAIL_USER || "jasbir.nexbyte@gmail.com" },
+            to: [{ email: mailOptions.to }],
+            subject: mailOptions.subject,
+            htmlContent: mailOptions.html
+        });
+
+        const options = {
+            hostname: 'api.brevo.com',
+            port: 443,
+            path: '/v3/smtp/email',
+            method: 'POST',
+            headers: {
+                'api-key': process.env.BREVO_API_KEY,
+                'Content-Type': 'application/json',
+                'Content-Length': Buffer.byteLength(postData)
+            }
+        };
+
+        const req = https.request(options, (res) => {
+            let body = '';
+            res.on('data', (chunk) => body += chunk);
+            res.on('end', () => {
+                if (res.statusCode >= 200 && res.statusCode < 300) {
+                    console.log(`Email sent successfully via Brevo HTTP API to ${mailOptions.to}`);
+                    resolve(true);
+                } else {
+                    console.error(`Brevo API Error (${res.statusCode}):`, body);
+                    resolve(false);
+                }
+            });
+        });
+
+        req.on('error', (e) => {
+            console.error("Brevo Request Error:", e.message);
+            resolve(false);
+        });
+
+        req.write(postData);
+        req.end();
+    });
+};
 
 const createTransporter = () => {
     return nodemailer.createTransport({
@@ -14,13 +60,18 @@ const createTransporter = () => {
 
 const sendEmailSafely = async (mailOptions) => {
     try {
+        if (process.env.BREVO_API_KEY) {
+            console.log("Using Brevo HTTP API for email delivery...");
+            return await sendEmailViaBrevo(mailOptions);
+        }
+        
+        console.log("Using Gmail SMTP for email delivery...");
         const transporter = createTransporter();
         await transporter.sendMail(mailOptions);
-        console.log(`Email sent successfully to ${mailOptions.to}`);
+        console.log(`Email sent successfully via Gmail SMTP to ${mailOptions.to}`);
         return true;
     } catch (error) {
-        console.error("Nodemailer Error: ", error.message);
-        // We log the error but don't throw it, so it doesn't crash the server
+        console.error("Email Delivery Error: ", error.message);
         return false;
     }
 };
