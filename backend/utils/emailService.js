@@ -3,10 +3,17 @@ const path = require('path');
 require('dotenv').config({ path: path.join(__dirname, '../../.env') });
 const https = require('https');
 
+const extractSenderName = (fromHeader) => {
+    if (!fromHeader) return "Event Management System";
+    const match = fromHeader.match(/^"([^"]+)"/);
+    return match ? match[1] : "Event Management System";
+};
+
 const sendEmailViaBrevo = (mailOptions) => {
     return new Promise((resolve) => {
+        const senderName = extractSenderName(mailOptions.from);
         const postData = JSON.stringify({
-            sender: { name: "EMS Dekho Team", email: process.env.EMAIL_USER || "jasbir.nexbyte@gmail.com" },
+            sender: { name: senderName, email: process.env.EMAIL_USER || "jasbir.nexbyte@gmail.com" },
             to: [{ email: mailOptions.to }],
             subject: mailOptions.subject,
             htmlContent: mailOptions.html
