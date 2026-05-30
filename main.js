@@ -1,7 +1,7 @@
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 const express = require('express');
 const bodyParser = require('body-parser');
-const path = require('path');
 const app = express();
 const cors = require('cors');
 const urlsp = bodyParser.urlencoded({ extended: false });
