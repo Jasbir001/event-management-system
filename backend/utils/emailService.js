@@ -49,6 +49,19 @@ const sendEmailViaBrevo = (mailOptions) => {
 };
 
 const createTransporter = () => {
+    if (process.env.BREVO_API_KEY && process.env.BREVO_API_KEY.startsWith('xsmtpsib-')) {
+        console.log("Using Brevo SMTP for email delivery...");
+        return nodemailer.createTransport({
+            host: 'smtp-relay.brevo.com',
+            port: 587,
+            auth: {
+                user: process.env.EMAIL_USER || "jasbir.nexbyte@gmail.com",
+                pass: process.env.BREVO_API_KEY
+            }
+        });
+    }
+
+    console.log("Using Gmail SMTP for email delivery...");
     return nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -61,8 +74,16 @@ const createTransporter = () => {
 const sendEmailSafely = async (mailOptions) => {
     try {
         if (process.env.BREVO_API_KEY) {
-            console.log("Using Brevo HTTP API for email delivery...");
-            return await sendEmailViaBrevo(mailOptions);
+            if (process.env.BREVO_API_KEY.startsWith('xkeysib-')) {
+                console.log("Using Brevo HTTP API for email delivery...");
+                return await sendEmailViaBrevo(mailOptions);
+            } else if (process.env.BREVO_API_KEY.startsWith('xsmtpsib-')) {
+                console.log("Using Brevo SMTP for email delivery...");
+                const transporter = createTransporter();
+                await transporter.sendMail(mailOptions);
+                console.log(`Email sent successfully via Brevo SMTP to ${mailOptions.to}`);
+                return true;
+            }
         }
         
         console.log("Using Gmail SMTP for email delivery...");
