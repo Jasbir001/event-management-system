@@ -228,6 +228,54 @@ class EmailService {
         // Fire and forget
         sendEmailSafely(mailOptions);
     }
+
+    async sendAdminAppointmentNotification(appointmentData) {
+        const mailOptions = {
+            from: `"EMS Dekho System" <${process.env.EMAIL_USER}>`,
+            to: process.env.EMAIL_USER,
+            subject: `New Appointment Request: ${appointmentData.Name}`,
+            html: `
+                <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 8px; max-width: 500px;">
+                    <h2 style="color: #2563eb;">New Appointment Alert</h2>
+                    <p>A new appointment has been scheduled with the following details:</p>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                        <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Name:</strong></td><td style="border-bottom: 1px solid #eee;">${appointmentData.Name}</td></tr>
+                        <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Email:</strong></td><td style="border-bottom: 1px solid #eee;">${appointmentData.Email}</td></tr>
+                        <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Phone:</strong></td><td style="border-bottom: 1px solid #eee;">${appointmentData.Phone}</td></tr>
+                        <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Time:</strong></td><td style="border-bottom: 1px solid #eee;">${appointmentData.Time}</td></tr>
+                        <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Address:</strong></td><td style="border-bottom: 1px solid #eee;">${appointmentData.Address || 'N/A'}</td></tr>
+                        <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Event Type:</strong></td><td style="border-bottom: 1px solid #eee;">${appointmentData.Event}</td></tr>
+                    </table>
+                    <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+                    <p style="color: #6b7280; font-size: 12px; margin: 0;"><strong>EMS Dekho System Notification</strong></p>
+                </div>
+            `
+        };
+        sendEmailSafely(mailOptions);
+    }
+
+    async sendAdminContactNotification(contactData) {
+        const mailOptions = {
+            from: `"EMS Dekho System" <${process.env.EMAIL_USER}>`,
+            to: process.env.EMAIL_USER,
+            subject: `New Contact Enquiry: ${contactData.Subject}`,
+            html: `
+                <div style="font-family: Arial, sans-serif; padding: 20px; border: 1px solid #ddd; border-radius: 8px; max-width: 500px;">
+                    <h2 style="color: #2563eb;">New Contact Enquiry</h2>
+                    <p>You have received a new contact request:</p>
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                        <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Name:</strong></td><td style="border-bottom: 1px solid #eee;">${contactData.Name}</td></tr>
+                        <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Email:</strong></td><td style="border-bottom: 1px solid #eee;">${contactData.Email}</td></tr>
+                        <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Subject:</strong></td><td style="border-bottom: 1px solid #eee;">${contactData.Subject}</td></tr>
+                        <tr><td style="padding: 8px 0; border-bottom: 1px solid #eee;"><strong>Message:</strong></td><td style="border-bottom: 1px solid #eee;">${contactData.Message}</td></tr>
+                    </table>
+                    <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
+                    <p style="color: #6b7280; font-size: 12px; margin: 0;"><strong>EMS Dekho System Notification</strong></p>
+                </div>
+            `
+        };
+        sendEmailSafely(mailOptions);
+    }
 }
 
 module.exports = new EmailService();

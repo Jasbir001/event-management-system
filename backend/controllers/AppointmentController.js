@@ -18,6 +18,9 @@ class AppointmentController {
                 console.error(err);
                 return res.status(500).json({ success: false, msg: "Error in Book Appointment", error: err.message });
             }
+            // Send email to Admin
+            emailService.sendAdminAppointmentNotification(data);
+            
             res.status(200).json({ success: true, msg: data.Name + " Appointment Booked Successfully" });
         });
     }

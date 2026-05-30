@@ -15,7 +15,10 @@ class ContactController {
                 console.error(err);
                 return res.status(500).json({ success: false, msg: 'Something went wrong try again', error: err.message });
             }
-            emailService.sendEnquiryAcknowledgment(data.Email, data.Name);
+        
+            // Send email to Admin
+            emailService.sendAdminContactNotification(data);
+            
             res.status(200).json({ success: true, msg: "Your Enquiry has been Submitted Successfully" });
         });
     }
