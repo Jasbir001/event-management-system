@@ -13,6 +13,7 @@ import MyBookingPage from "./pages/MyBookingPage";
 import ContactPage from "./pages/ContactPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 const AppRoutes: React.FC = () => (
   <BrowserRouter>
@@ -33,6 +34,8 @@ const AppRoutes: React.FC = () => (
         <Route path="/booking" element={<MyBookingPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/admin" element={<AdminDashboard />} />
+        {/* Catch-all Route for 404 Not Found */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </main>
     <Footer />
